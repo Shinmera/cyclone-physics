@@ -648,10 +648,10 @@ unsigned CollisionDetector::boxAndHalfSpace(
   if (data->contactsLeft <= 0) return 0;
 
     // Check for intersection
-    if (!IntersectionTests::boxAndHalfSpace(box, plane))
-    {
-        return 0;
-    }
+    // if (!IntersectionTests::boxAndHalfSpace(box, plane))
+    // {
+    //     return 0;
+    // }
 
     // We have an intersection, so find the intersection points. We can make
     // do with only checking vertices. If the box is resting on a plane
@@ -695,6 +695,10 @@ unsigned CollisionDetector::boxAndHalfSpace(
             Vector3 vpos(mults[i][0], mults[i][1], mults[i][2]);
             vpos.componentProductUpdate(box.halfSize);
             contact->penetration = plane.offset - vertexDistance;
+
+            Vector3 vpos1(mults[i][0], mults[i][1], mults[i][2]);
+            vpos.componentProductUpdate(box.halfSize);
+            Vector3 vpos2 = box.transform.transform(vpos);
 
             // Write the appropriate data
             contact->setBodyData(box.body, NULL,

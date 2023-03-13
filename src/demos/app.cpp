@@ -208,6 +208,7 @@ void RigidBodyApplication::update()
     float duration = (float)TimingData::get().lastFrameDuration * 0.001f;
     if (duration <= 0.0f) return;
     else if (duration > 0.05f) duration = 0.05f;
+    duration = 0.01;
 
     // Exit immediately if we aren't running the simulation
     if (pauseSimulation)
