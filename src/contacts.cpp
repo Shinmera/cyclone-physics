@@ -9,7 +9,7 @@
  * implies agreement with all terms and conditions of the accompanying
  * software licence.
  */
-
+#include <iostream>
 #include <cyclone/contacts.h>
 #include <memory.h>
 #include <assert.h>
@@ -555,6 +555,12 @@ void ContactResolver::resolveContacts(Contact *contacts,
 
     // Prepare the contacts for processing
     prepareContacts(contacts, numContacts, duration);
+
+    for(int i=0; i<numContacts; ++i){
+      std::cout << i << " " << contacts[i].contactPoint << std::endl;
+      std::cout << "  " << contacts[i].penetration << std::endl;
+      std::cout << "  " << contacts[i].desiredDeltaVelocity << std::endl;
+    }
 
     // Resolve the interpenetration problems with the contacts.
     adjustPositions(contacts, numContacts, duration);

@@ -98,6 +98,7 @@
 #define CYCLONE_CORE_H
 
 #include "precision.h"
+#include <iostream>
 
 /**
  * The cyclone namespace includes all cyclone functions and
@@ -251,6 +252,10 @@ namespace cyclone {
         {
             return Vector3(x*value, y*value, z*value);
         }
+
+      friend std::ostream& operator<<(std::ostream& os, Vector3 const &vector) {
+        return os << vector.x << "," << vector.y << "," << vector.z;
+      }
 
         /**
          * Calculates and returns a component-wise product of this
@@ -692,6 +697,14 @@ namespace cyclone {
                 vector.z * data[10] + data[11]
             );
         }
+
+      
+      friend std::ostream& operator<<(std::ostream& os, Matrix4 const &m) {
+        return os << m.data[0] << "," << m.data[1] << "," << m.data[2] << "," << m.data[3] << ","
+                  << m.data[4] << "," << m.data[5] << "," << m.data[6] << "," << m.data[7] << ","
+                  << m.data[8] << "," << m.data[9] << "," << m.data[10] << "," << m.data[11] << ","
+                  << m.data[12] << "," << m.data[13] << "," << m.data[14] << "," << m.data[15] << ",";
+      }
 
         /**
          * Transform the given vector by this matrix.

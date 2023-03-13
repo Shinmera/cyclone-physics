@@ -178,7 +178,7 @@ public:
         body->setRotation(cyclone::Vector3(0,0,0));
         halfSize = extents;
 
-        cyclone::real mass = halfSize.x * halfSize.y * halfSize.z * 8.0f;
+        cyclone::real mass = 10.0;
         body->setMass(mass);
 
         cyclone::Matrix3 tensor;
@@ -222,7 +222,7 @@ class ExplosionDemo : public RigidBodyApplication
     /**
      * Holds the number of boxes in the simulation.
      */
-    const static unsigned boxes = OBJECTS;
+    const static unsigned boxes = 1;
 
     /** Holds the box data. */
     Box boxData[boxes];
@@ -230,7 +230,7 @@ class ExplosionDemo : public RigidBodyApplication
     /**
      * Holds the number of balls in the simulation.
      */
-    const static unsigned balls = OBJECTS;
+    const static unsigned balls = 0;
 
     /** Holds the ball data. */
     Ball ballData[balls];
@@ -296,10 +296,10 @@ void ExplosionDemo::reset()
 {
     Box *box = boxData;
 
-    box++->setState(cyclone::Vector3(0,3,0),
+    box++->setState(cyclone::Vector3(0,10,0),
                     cyclone::Quaternion(),
-                    cyclone::Vector3(4,1,1),
-                    cyclone::Vector3(0,1,0));
+                    cyclone::Vector3(5,5,5),
+                    cyclone::Vector3(0,0,0));
 
     if (boxes > 1)
     {
@@ -338,7 +338,7 @@ void ExplosionDemo::generateContacts()
 
     // Set up the collision data structure
     cData.reset(maxContacts);
-    cData.friction = (cyclone::real)0.9;
+    cData.friction = (cyclone::real)0.0;
     cData.restitution = (cyclone::real)0.6;
     cData.tolerance = (cyclone::real)0.1;
 

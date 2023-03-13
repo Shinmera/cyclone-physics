@@ -20,7 +20,11 @@ using namespace cyclone;
 
 void CollisionPrimitive::calculateInternals()
 {
+  std::cout << "INT1: " << transform << std::endl;
+  std::cout << "CALC: " << (body->getTransform() * offset) << std::endl;
     transform = body->getTransform() * offset;
+    
+    std::cout << "INT2: " << transform << std::endl;
 }
 
 bool IntersectionTests::sphereAndHalfSpace(
@@ -645,7 +649,7 @@ unsigned CollisionDetector::boxAndHalfSpace(
     )
 {
     // Make sure we have contacts
-    if (data->contactsLeft <= 0) return 0;
+  if (data->contactsLeft <= 0) return 0;
 
     // Check for intersection
     if (!IntersectionTests::boxAndHalfSpace(box, plane))
@@ -658,8 +662,14 @@ unsigned CollisionDetector::boxAndHalfSpace(
     // or on an edge, it will be reported as four or two contact points.
 
     // Go through each combination of + and - for each half-size
-    static real mults[8][3] = {{1,1,1},{-1,1,1},{1,-1,1},{-1,-1,1},
-                               {1,1,-1},{-1,1,-1},{1,-1,-1},{-1,-1,-1}};
+    static real mults[8][3] = {{1,1,1},
+                               {-1,1,1},
+                               {1,-1,1},
+                               {-1,-1,1},
+                               {1,1,-1},
+                               {-1,1,-1},
+                               {1,-1,-1},
+                               {-1,-1,-1}};
 
     Contact* contact = data->contacts;
     unsigned contactsUsed = 0;
@@ -685,6 +695,9 @@ unsigned CollisionDetector::boxAndHalfSpace(
             contact->contactPoint *= (vertexDistance-plane.offset);
             contact->contactPoint += vertexPos;
             contact->contactNormal = plane.direction;
+            
+            Vector3 vpos(mults[i][0], mults[i][1], mults[i][2]);
+            vpos.componentProductUpdate(box.halfSize);
             contact->penetration = plane.offset - vertexDistance;
 
             // Write the appropriate data

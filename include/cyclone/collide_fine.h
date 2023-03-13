@@ -83,7 +83,6 @@ namespace cyclone {
         }
 
 
-    protected:
         /**
          * The resultant transform of the primitive. This is
          * calculated by combining the offset of the primitive
