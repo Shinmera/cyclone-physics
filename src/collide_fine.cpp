@@ -20,11 +20,7 @@ using namespace cyclone;
 
 void CollisionPrimitive::calculateInternals()
 {
-  std::cout << "INT1: " << transform << std::endl;
-  std::cout << "CALC: " << (body->getTransform() * offset) << std::endl;
     transform = body->getTransform() * offset;
-    
-    std::cout << "INT2: " << transform << std::endl;
 }
 
 bool IntersectionTests::sphereAndHalfSpace(
