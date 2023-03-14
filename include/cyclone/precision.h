@@ -29,7 +29,7 @@
 
 namespace cyclone {
 
-#if 0
+#if 1
     /**
      * Defines we're in single precision mode, for any code
      * that needs to be conditionally compiled.
