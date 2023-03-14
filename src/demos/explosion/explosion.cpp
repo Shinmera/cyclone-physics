@@ -297,7 +297,7 @@ void ExplosionDemo::reset()
     Box *box = boxData;
 
     box++->setState(cyclone::Vector3(0,10,0),
-                    cyclone::Quaternion(),
+                    cyclone::Quaternion(0.85355335, 0.3535534, -0.14644663, 0.3535534),
                     cyclone::Vector3(5,5,5),
                     cyclone::Vector3(0,0,0));
 

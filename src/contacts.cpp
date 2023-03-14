@@ -398,7 +398,7 @@ void Contact::applyPositionChange(Vector3 linearChange[2],
         // Use the same procedure as for calculating frictionless
         // velocity change to work out the angular inertia.
         Vector3 angularInertiaWorld =
-            relativeContactPosition[i] % contactNormal;
+          relativeContactPosition[i] % contactNormal;
         angularInertiaWorld =
             inverseInertiaTensor.transform(angularInertiaWorld);
         angularInertiaWorld =
@@ -436,6 +436,7 @@ void Contact::applyPositionChange(Vector3 linearChange[2],
             -relativeContactPosition[i].scalarProduct(contactNormal)
             );
 
+        
         // Use the small angle approximation for the sine of the angle (i.e.
         // the magnitude would be sine(angularLimit) * projection.magnitude
         // but we approximate sine(angularLimit) to angularLimit).
@@ -555,32 +556,12 @@ void ContactResolver::resolveContacts(Contact *contacts,
 
     // Prepare the contacts for processing
     prepareContacts(contacts, numContacts, duration);
-    std::cout << "PREPARED" << std::endl;
-    for(int i=0; i<numContacts; ++i){
-      std::cout << i << " " << contacts[i].contactPoint << std::endl;
-      std::cout << "  " << contacts[i].penetration << std::endl;
-      std::cout << "  " << contacts[i].desiredDeltaVelocity << std::endl;
-    }
 
     // Resolve the interpenetration problems with the contacts.
     adjustPositions(contacts, numContacts, duration);
 
-    std::cout << "POSITIONS ADJUSTED" << std::endl;
-    for(int i=0; i<numContacts; ++i){
-      std::cout << i << " " << contacts[i].contactPoint << std::endl;
-      std::cout << "  " << contacts[i].penetration << std::endl;
-      std::cout << "  " << contacts[i].desiredDeltaVelocity << std::endl;
-    }
-
     // Resolve the velocity problems with the contacts.
     adjustVelocities(contacts, numContacts, duration);
-
-    std::cout << "VELOCITIES ADJUSTED" << std::endl;
-    for(int i=0; i<numContacts; ++i){
-      std::cout << i << " " << contacts[i].contactPoint << std::endl;
-      std::cout << "  " << contacts[i].penetration << std::endl;
-      std::cout << "  " << contacts[i].desiredDeltaVelocity << std::endl;
-    }
 }
 
 void ContactResolver::prepareContacts(Contact* contacts,
@@ -625,6 +606,7 @@ void ContactResolver::adjustVelocities(Contact *c,
 
         // Do the resolution on the contact that came out top.
         c[index].applyVelocityChange(velocityChange, rotationChange);
+        std::cout << "VEL: " << rotationChange[0] << std::endl;
 
         // With the change in velocity of the two bodies, the update of
         // contact velocities means that some of the relative closing
@@ -643,12 +625,10 @@ void ContactResolver::adjustVelocities(Contact *c,
                         deltaVel = velocityChange[d] +
                             rotationChange[d].vectorProduct(
                                 c[i].relativeContactPosition[b]);
-
                         // The sign of the change is negative if we're dealing
                         // with the second body in a contact.
-                        c[i].contactVelocity +=
-                            c[i].contactToWorld.transformTranspose(deltaVel)
-                            * (b?-1:1);
+                        Vector3 tmp = c[i].contactToWorld.transformTranspose(deltaVel);
+                        c[i].contactVelocity += tmp * (b?-1:1);
                         c[i].calculateDesiredDeltaVelocity(duration);
                     }
                 }
@@ -684,8 +664,6 @@ void ContactResolver::adjustPositions(Contact *c,
         }
         if (index == numContacts) break;
 
-        std::cout << "IDX: " << index << std::endl;
-
         // Match the awake state at the contact
         c[index].matchAwakeState();
 
@@ -719,7 +697,6 @@ void ContactResolver::adjustPositions(Contact *c,
                         c[i].penetration +=
                             deltaPosition.scalarProduct(c[i].contactNormal)
                           * (b?1:-1);
-                        std::cout << i << " dL: " << linearChange[d] << std::endl;
                     }
                 }
             }

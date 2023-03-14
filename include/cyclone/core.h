@@ -585,6 +585,10 @@ namespace cyclone {
                 q.i*multiplier.j - q.j*multiplier.i;
         }
 
+      friend std::ostream& operator<<(std::ostream& os, Quaternion const &vector) {
+        return os << vector.i << "," << vector.j << "," << vector.k << "," << vector.r;
+      }
+
         /**
          * Adds the given vector to this, scaled by the given amount.
          * This is used to update the orientation quaternion by a rotation
@@ -1227,6 +1231,13 @@ namespace cyclone {
             data[3] += o.data[3]; data[4] += o.data[4]; data[5] += o.data[5];
             data[6] += o.data[6]; data[7] += o.data[7]; data[8] += o.data[8];
         }
+
+      friend std::ostream& operator<<(std::ostream& os, Matrix3 const &m) {
+        return os << m.data[0] << "," << m.data[1] << "," << m.data[2] << ","
+                  << m.data[3] << "," << m.data[4] << "," << m.data[5] << ","
+                  << m.data[6] << "," << m.data[7] << "," << m.data[8];
+      }
+
 
         /**
          * Sets this matrix to be the rotation matrix corresponding to
