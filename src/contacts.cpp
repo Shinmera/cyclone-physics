@@ -234,6 +234,7 @@ void Contact::applyVelocityChange(Vector3 velocityChange[2],
 
     // Split in the impulse into linear and rotational components
     Vector3 impulsiveTorque = relativeContactPosition[0] % impulse;
+    std::cout << inverseInertiaTensor[0] << std::endl;
     rotationChange[0] = inverseInertiaTensor[0].transform(impulsiveTorque);
     velocityChange[0].clear();
     velocityChange[0].addScaledVector(impulse, body[0]->getInverseMass());
@@ -557,11 +558,27 @@ void ContactResolver::resolveContacts(Contact *contacts,
     // Prepare the contacts for processing
     prepareContacts(contacts, numContacts, duration);
 
+    for(int i=0; i<numContacts; ++i){
+      std::cout << "B " << i << std::endl;
+      std::cout << contacts[i].contactPoint << " " << contacts[i].penetration << std::endl;
+      std::cout << contacts[i].body[0]->getPosition() << " " << contacts[i].body[0]->getOrientation() << std::endl;
+    }
+
     // Resolve the interpenetration problems with the contacts.
     adjustPositions(contacts, numContacts, duration);
 
+    for(int i=0; i<numContacts; ++i){
+      std::cout << "C " << i << std::endl;
+      std::cout << contacts[i].contactPoint << " " << contacts[i].penetration << std::endl;
+      std::cout << contacts[i].body[0]->getPosition() << " " << contacts[i].body[0]->getOrientation() << std::endl;
+    }
+
     // Resolve the velocity problems with the contacts.
     adjustVelocities(contacts, numContacts, duration);
+
+std::cout << "DONE." << std::endl;
+ std::cout << "LOC: " << contacts[0].body[0]->getPosition() << " ORI: " << contacts[0].body[0]->getOrientation() << std::endl;
+ std::cout << "VEL: " << contacts[0].body[0]->getVelocity() << " ROT: " << contacts[0].body[0]->getRotation() << std::endl;
 }
 
 void ContactResolver::prepareContacts(Contact* contacts,
@@ -605,8 +622,11 @@ void ContactResolver::adjustVelocities(Contact *c,
         c[index].matchAwakeState();
 
         // Do the resolution on the contact that came out top.
+        std::cout << "ROT1: " << rotationChange[0] << std::endl;
+        std::cout << "VEL1: " << velocityChange[0] << std::endl;
         c[index].applyVelocityChange(velocityChange, rotationChange);
-        std::cout << "VEL: " << rotationChange[0] << std::endl;
+        std::cout << "ROT2: " << rotationChange[0] << std::endl;
+        std::cout << "VEL2: " << velocityChange[0] << std::endl;
 
         // With the change in velocity of the two bodies, the update of
         // contact velocities means that some of the relative closing

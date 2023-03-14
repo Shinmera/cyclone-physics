@@ -696,10 +696,6 @@ unsigned CollisionDetector::boxAndHalfSpace(
             vpos.componentProductUpdate(box.halfSize);
             contact->penetration = plane.offset - vertexDistance;
 
-            Vector3 vpos1(mults[i][0], mults[i][1], mults[i][2]);
-            vpos.componentProductUpdate(box.halfSize);
-            Vector3 vpos2 = box.transform.transform(vpos);
-
             // Write the appropriate data
             contact->setBodyData(box.body, NULL,
                 data->friction, data->restitution);

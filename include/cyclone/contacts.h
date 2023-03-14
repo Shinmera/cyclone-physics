@@ -107,8 +107,6 @@ namespace cyclone {
         void setBodyData(RigidBody* one, RigidBody *two,
                          real friction, real restitution);
 
-    protected:
-
         /**
          * A transform matrix that converts co-ordinates in the contact's
          * frame of reference to world co-ordinates. The columns of this
